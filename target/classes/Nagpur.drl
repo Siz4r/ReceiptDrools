@@ -2,8 +2,18 @@ package projektparagon;
 
 import java.math.BigDecimal;
 import models.ItemCity
+import models.products.Milk;
+import models.Basket;
 // declare any global variables here
 dialect "java"
+rule 'Milk Promotion'
+    when
+        product : Milk()
+        basket: Basket()
+    then
+        System.out.println("siema");
+end
+
 rule 'Nagpur Medicine Item'
    when
       item : ItemCity(purchaseCity == ItemCity.City.NAGPUR,

@@ -1,6 +1,8 @@
 import core.MainFrame;
 import core.RulesService;
+import models.Basket;
 import models.ItemCity;
+import models.products.Milk;
 
 import java.math.BigDecimal;
 
@@ -32,6 +34,9 @@ public class Main {
             item4.setTypeofItem(ItemCity.Type.GROCERIES);
             item4.setSellPrice(new BigDecimal(10));
             RulesService.getKsession().insert(item4);
+
+            RulesService.getKsession().insert(new Basket());
+            RulesService.getKsession().insert(new Milk("Mleko"));
 
             RulesService.getKsession().fireAllRules();
 
