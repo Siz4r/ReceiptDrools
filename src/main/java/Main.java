@@ -35,7 +35,7 @@ public class Main {
             item4.setSellPrice(new BigDecimal(10));
             RulesService.getKsession().insert(item4);
 
-            RulesService.getKsession().insert(new Basket());
+            RulesService.getKsession().insert(Basket.getBasket());
             RulesService.getKsession().insert(new Milk("Mleko"));
 
             RulesService.getKsession().fireAllRules();

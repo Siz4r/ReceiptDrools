@@ -13,7 +13,6 @@ public class Receipt {
                 BorderFactory.createTitledBorder("Paragon fiskalny")
         );
 
-
         JPanel productsList = new JPanel(new GridLayout(basket.productsQuantity, 3, 5, 5));
         for (int i = 0; i < basket.productsQuantity; i++) {
             productsList.add(new JLabel("Nazwa produktu"));
