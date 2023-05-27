@@ -6,9 +6,10 @@ import models.Receipt;
 
 import javax.swing.*;
 import java.awt.*;
-
+import models.Basket;
+import models.products.Product;
 public class MainFrame {
-
+    private Basket basket;
     public MainFrame() {
         initialize();
     }
@@ -24,6 +25,8 @@ public class MainFrame {
         window.setVisible(true);
 
         //Tutaj lista dostepnych produktow w aplikacji
+        basket = new Basket();
+        basket.setReceiptContainer(Receipt.generateReceipt(basket));
         Milk milk = new Milk("Mleko");
         JPanel products = new JPanel(new GridLayout(5, 1, 10, 10));
         products.add(milk.getComponent());
@@ -38,7 +41,7 @@ public class MainFrame {
         basket.setBorder(BorderFactory.createLineBorder(Color.black));
 
         //Tutaj tworze koszyk, możesz w innym miejscu. Jak się wepniesz twoja decyzja
-        basket.add(Receipt.generateReceipt(new Basket()));
+        basket.add(this.basket.getReceiptContainer());
         window.add(basket);
         window.pack();
     }

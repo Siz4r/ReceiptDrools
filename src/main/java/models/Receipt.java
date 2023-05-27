@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Receipt {
-    public static Component generateReceipt(Basket basket) {
+    public static JPanel generateReceipt(Basket basket) {
         JPanel receipt = new JPanel();
         receipt.setLayout(new BorderLayout(10, 10));
         receipt.setOpaque(true);
@@ -18,7 +18,7 @@ public class Receipt {
         for (int i = 0; i < basket.productsQuantity; i++) {
             productsList.add(new JLabel("Nazwa produktu"));
             productsList.add(new JLabel("Jaki typ opodatkowania: (A || B || C)"));
-            productsList.add(new JLabel("Ilość xcena suma(A || B || C)"));
+            productsList.add(new JLabel(basket.getProductList().toString()));
         }
 
         JPanel taxes = new JPanel(new GridLayout(basket.taxesTypes * 2, 2, 5, 5));

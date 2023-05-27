@@ -1,0 +1,29 @@
+package projektparagon;
+import java.math.BigDecimal;
+import models.ItemCity
+
+dialect "java"
+rule "Oblicz sumę PLN"
+when
+  $basket: Basket($products: productList)
+  exists(Product() from $products)
+then
+  BigDecimal totalAmount = calculateTotalAmount($products);
+  updateTotalAmount($basket, totalAmount);
+end
+
+function BigDecimal calculateTotalAmount(List<Product> products) {
+  BigDecimal totalAmount = BigDecimal.ZERO;
+  for (Product product : products) {
+    BigDecimal productPrice = product.getPrice();
+    BigDecimal productTaxRate = product.getTaxRate();
+    BigDecimal productTax = productPrice.multiply(productTaxRate);
+    BigDecimal productTotalPrice = productPrice.add(productTax);
+    totalAmount = totalAmount.add(productTotalPrice);
+  }
+  return totalAmount;
+}
+
+function void updateTotalAmount(Basket basket, BigDecimal totalAmount) {
+  basket.setTotalAmount(totalAmount);
+}

@@ -1,0 +1,13 @@
+package projektparagon;
+import java.math.BigDecimal;
+import models.ItemCity
+
+dialect "java"
+rule "Dodaj produkt do koszyka"
+when
+  $basket: Basket($products: productList)
+  $product: Product() from $products
+then
+  $basket.addProduct($product);
+  updateReceipt($basket);
+end
