@@ -1,30 +1,21 @@
 package models;
 
 import models.products.Product;
+import models.products.TaxType;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Basket {
     public final Integer productsQuantity = 5;
     private static Basket basket;
-
-    public List<Product> getProductList() {
-        return productList;
-    }
-
-    private final List<Product> productList = new ArrayList<>();
-
-    public JPanel getReceiptContainer() {
-        return receiptContainer;
-    }
-
-    public void setReceiptContainer(JPanel receiptContainer) {
-        this.receiptContainer.add(receiptContainer);
-    }
-
+    private final Map<Product, Integer> productList = new HashMap<>();
     private final JPanel receiptContainer = new JPanel();
+    private Map<TaxType, Double> amountOfTaxes = new HashMap<>();
+
     private Basket() {
     }
 
@@ -36,12 +27,16 @@ public class Basket {
         return basket;
     }
 
-    public final Integer taxesTypes = 2;
+    public Map<TaxType, Double> getAmountOfTaxes() {
+        return amountOfTaxes;
+    }
 
     public void addProduct(Product product) {
-        productList.add(product);
+        productList.merge(product, 1, Integer::sum);
+        amountOfTaxes.merge(product.getTaxType(), product.getTaxType().getInterest() * product.getPrize(), Double::sum);
         updateReceipt();
     }
+
     private void updateReceipt() {
         JPanel receipt = Receipt.generateReceipt(this);
 
@@ -49,5 +44,16 @@ public class Basket {
         getReceiptContainer().add(receipt);
         getReceiptContainer().revalidate();
         getReceiptContainer().repaint();
+    }
+    public Map<Product, Integer> getProductList() {
+        return productList;
+    }
+
+    public JPanel getReceiptContainer() {
+        return receiptContainer;
+    }
+
+    public void setReceiptContainer(JPanel receiptContainer) {
+        this.receiptContainer.add(receiptContainer);
     }
 }

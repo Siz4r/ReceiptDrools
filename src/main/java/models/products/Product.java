@@ -5,14 +5,17 @@ import models.Basket;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Objects;
 
-public abstract class Product  {
+public class Product  {
     private final String name;
+    private final TaxType taxType;
+    private final Double prize;
 
-    public Product(String name) {
+    public Product(String name, TaxType taxType, Double prize) {
         this.name = name;
+        this.taxType = taxType;
+        this.prize = prize;
     }
     public String getName() {
         return name;
@@ -39,5 +42,26 @@ public abstract class Product  {
         product.add("minusButton", minus);
         minus.addActionListener(e -> System.out.println("Siema"));
         return product;
+    }
+
+    public TaxType getTaxType() {
+        return taxType;
+    }
+
+    public Double getPrize() {
+        return prize;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(name, product.name) && taxType == product.taxType && Objects.equals(prize, product.prize);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, taxType, prize);
     }
 }

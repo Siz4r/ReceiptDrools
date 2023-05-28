@@ -2,7 +2,8 @@ import core.MainFrame;
 import core.RulesService;
 import models.Basket;
 import models.ItemCity;
-import models.products.Milk;
+import models.products.Product;
+import models.products.TaxType;
 
 import java.math.BigDecimal;
 
@@ -36,7 +37,7 @@ public class Main {
             RulesService.getKsession().insert(item4);
 
             RulesService.getKsession().insert(Basket.getBasket());
-            RulesService.getKsession().insert(new Milk("Mleko"));
+            RulesService.getKsession().insert(new Product("Mleko", TaxType.A, 2.99));
 
             RulesService.getKsession().fireAllRules();
 

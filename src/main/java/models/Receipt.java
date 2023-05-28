@@ -1,7 +1,12 @@
 package models;
 
+import models.products.Product;
+import models.products.TaxType;
+
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
+import java.util.Map;
 
 public class Receipt {
     public static JPanel generateReceipt(Basket basket) {
@@ -13,25 +18,31 @@ public class Receipt {
                 BorderFactory.createTitledBorder("Paragon fiskalny")
         );
 
-        JPanel productsList = new JPanel(new GridLayout(basket.productsQuantity, 3, 5, 5));
-        for (int i = 0; i < basket.productsQuantity; i++) {
-            productsList.add(new JLabel("Nazwa produktu"));
-            productsList.add(new JLabel("Jaki typ opodatkowania: (A || B || C)"));
-            productsList.add(new JLabel(basket.getProductList().toString()));
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        JPanel productsList = new JPanel(new GridLayout(basket.getProductList().size(), 3, 5, 5));
+        for (Map.Entry<Product, Integer> p: basket.getProductList().entrySet()) {
+            productsList.add(new JLabel(p.getKey().getName()));
+            productsList.add(new JLabel(p.getKey().getTaxType().name()));
+            String builder = p.getValue() +
+                    " x" +
+                    p.getKey().getPrize() +
+                    " " +
+                    decimalFormat.format(p.getValue() * p.getKey().getPrize()) +
+                    p.getKey().getTaxType().name();
+
+            productsList.add(new JLabel(builder));
         }
 
-        JPanel taxes = new JPanel(new GridLayout(basket.taxesTypes * 2, 2, 5, 5));
+        JPanel taxes = new JPanel(new GridLayout(basket.getAmountOfTaxes().size() * 2, 2, 40, 5));
         taxes.setBackground(Color.WHITE);
 
-        taxes.add(new JLabel("Sprzedaż opodatkowana A"));
-        taxes.add(new JLabel("Suma produktow z podatkiem A"));
-        taxes.add(new JLabel("PTU A 23.00 %"));
-        taxes.add(new JLabel("Suma podatku A"));
-        taxes.add(new JLabel("Sprzedaż opodatkowana B"));
-        taxes.add(new JLabel("Suma produktow z podatkiem B"));
-        taxes.add(new JLabel("PTU B 8.00 %"));
-        taxes.add(new JLabel("Suma podatku B"));
-
+        for (Map.Entry<TaxType, Double> tax: basket.getAmountOfTaxes().entrySet()){
+            taxes.add(new JLabel("Sprzedaż opodatkowana " + tax.getKey().name()));
+            taxes.add(new JLabel(String.valueOf(decimalFormat.format(tax.getValue() * (1.0 / tax.getKey().getInterest())))));
+            taxes.add(new JLabel("PTU " + tax.getKey().name() + " " + tax.getKey().getInterest() + " %"));
+            taxes.add(new JLabel(decimalFormat.format(tax.getValue())));
+        }
+        taxes.setAlignmentX(SwingConstants.RIGHT);
         productsList.setBackground(Color.WHITE);
         receipt.add(productsList, BorderLayout.PAGE_START);
         receipt.add(taxes, BorderLayout.CENTER);

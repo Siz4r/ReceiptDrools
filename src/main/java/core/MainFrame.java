@@ -1,8 +1,9 @@
 package core;
 
 import models.Basket;
-import models.products.Milk;
 import models.Receipt;
+import models.products.Product;
+import models.products.TaxType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +43,7 @@ public class MainFrame {
     }
 
     private static JPanel getProducts() {
-        Milk milk = new Milk("Mleko");
+        Product milk = new Product("Mleko", TaxType.A, 2.99);
         JPanel products = new JPanel(new GridLayout(5, 1, 10, 10));
 
         products.add(milk.getComponent(Basket.getBasket()));
