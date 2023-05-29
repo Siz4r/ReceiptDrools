@@ -1,13 +1,35 @@
-package projektparagon;
+import models.Basket;
+import models.products.Product;
 import java.math.BigDecimal;
-import models.ItemCity
 
-dialect "java"
 rule "Dodaj produkt do koszyka"
 when
-  $basket: Basket($products: productList)
-  $product: Product() from $products
+  $basket: Basket()
+  $product: Product()
 then
   $basket.addProduct($product);
-  updateReceipt($basket);
 end
+
+rule "Oblicz sumę PLN"
+when
+  $basket: Basket($productList: productList)
+  accumulate(
+    $product: Product() from $productList,
+    $sum: (BigDecimal) calculateTotalAmount($product),
+    $totalAmount: sum($sum))
+then
+  $basket.setTotalAmount($totalAmount);
+end
+
+function BigDecimal calculateTotalAmount(Product $product) {
+  BigDecimal price = $product.getPrice();
+  BigDecimal taxRate = calculateTaxRate($product.getType());
+  BigDecimal taxAmount = price.multiply(taxRate);
+  return price.add(taxAmount);
+}
+
+function BigDecimal calculateTaxRate(String $productType) {
+  // Zdefiniuj logikę obliczania stawki podatku na podstawie typu produktu
+  // Możesz użyć switch, if-else lub innych mechanizmów
+  return BigDecimal.ZERO;
+}

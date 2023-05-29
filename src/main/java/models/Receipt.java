@@ -46,7 +46,7 @@ public class Receipt {
         productsList.setBackground(Color.WHITE);
         receipt.add(productsList, BorderLayout.PAGE_START);
         receipt.add(taxes, BorderLayout.CENTER);
-        JLabel sum = new JLabel("SUMA PLN: 15.99");
+        JLabel sum = new JLabel("SUMA PLN: " + decimalFormat.format(basket.getTotalAmount()));
         sum.setFont(new Font("Serif", Font.BOLD, 18));
         sum.setHorizontalAlignment(SwingConstants.RIGHT);
         receipt.add(sum, BorderLayout.PAGE_END);

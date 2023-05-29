@@ -44,13 +44,17 @@ public class MainFrame {
 
     private static JPanel getProducts() {
         Product milk = new Product("Mleko", TaxType.A, 2.99);
+        Product sugar = new Product("Cukier", TaxType.B, 5.0);
+        Product eggs = new Product("Jaja ", TaxType.C, 15.50);
+        Product oil = new Product("Olej", TaxType.C, 7.99);
+        Product bread = new Product("Chleb", TaxType.B, 3.89);
         JPanel products = new JPanel(new GridLayout(5, 1, 10, 10));
 
         products.add(milk.getComponent(Basket.getBasket()));
-        products.add(milk.getComponent(Basket.getBasket()));
-        products.add(milk.getComponent(Basket.getBasket()));
-        products.add(milk.getComponent(Basket.getBasket()));
-        products.add(milk.getComponent(Basket.getBasket()));
+        products.add(sugar.getComponent(Basket.getBasket()));
+        products.add(eggs.getComponent(Basket.getBasket()));
+        products.add(oil.getComponent(Basket.getBasket()));
+        products.add(bread.getComponent(Basket.getBasket()));
 
         return products;
     }

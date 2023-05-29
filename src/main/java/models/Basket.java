@@ -15,6 +15,11 @@ public class Basket {
     private final Map<Product, Integer> productList = new HashMap<>();
     private final JPanel receiptContainer = new JPanel();
     private Map<TaxType, Double> amountOfTaxes = new HashMap<>();
+    private double totalAmount = 0;
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
 
     private Basket() {
     }
@@ -34,7 +39,22 @@ public class Basket {
     public void addProduct(Product product) {
         productList.merge(product, 1, Integer::sum);
         amountOfTaxes.merge(product.getTaxType(), product.getTaxType().getInterest() * product.getPrize(), Double::sum);
+        totalAmount += product.getPrize();
         updateReceipt();
+
+    }
+    public void removeProduct(Product product) {
+        Integer quantity = productList.get(product);
+        if (quantity != null) {
+            if (quantity > 1) {
+                productList.put(product, quantity - 1);
+            } else {
+                productList.remove(product);
+            }
+            amountOfTaxes.merge(product.getTaxType(), -product.getTaxType().getInterest() * product.getPrize(), Double::sum);
+            totalAmount -= product.getPrize();
+            updateReceipt();
+        }
     }
 
     private void updateReceipt() {

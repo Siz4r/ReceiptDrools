@@ -40,7 +40,7 @@ public class Product  {
         product.add("addButton", add);
         product.add("productName", name);
         product.add("minusButton", minus);
-        minus.addActionListener(e -> System.out.println("Siema"));
+        minus.addActionListener(e -> basket.removeProduct(this));
         return product;
     }
 
@@ -64,4 +64,5 @@ public class Product  {
     public int hashCode() {
         return Objects.hash(name, taxType, prize);
     }
+
 }
