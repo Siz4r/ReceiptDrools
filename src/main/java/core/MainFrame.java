@@ -12,6 +12,7 @@ public class MainFrame {
     public MainFrame() {
         initialize();
     }
+    private JLabel discountLabel;
 
     private void initialize() {
         JFrame window = new JFrame();
@@ -27,10 +28,11 @@ public class MainFrame {
         products.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         window.add(products);
 
-        Basket basket = Basket.getBasket();
-        basket.setReceiptContainer(Receipt.generateReceipt(basket));
+        Basket basket1 = Basket.getBasket();
+        basket1.setReceiptContainer(Receipt.generateReceipt(basket1));
+        basket1.promotion();
 
-        window.add(getBasketComponent(basket));
+        window.add(getBasketComponent(basket1));
         window.pack();
     }
 
@@ -44,10 +46,10 @@ public class MainFrame {
 
     private static JPanel getProducts() {
         Product milk = new Product("Mleko", TaxType.A, 2.99);
-        Product sugar = new Product("Cukier", TaxType.B, 5.0);
-        Product eggs = new Product("Jaja ", TaxType.C, 15.50);
-        Product oil = new Product("Olej", TaxType.C, 7.99);
-        Product bread = new Product("Chleb", TaxType.B, 3.89);
+        Product sugar = new Product( "Cukier", TaxType.B, 5.0);
+        Product eggs = new Product( "Jaja ", TaxType.C, 15.50);
+        Product oil = new Product( "Olej", TaxType.C, 7.99);
+        Product bread = new Product( "Chleb", TaxType.B, 3.89);
         JPanel products = new JPanel(new GridLayout(5, 1, 10, 10));
 
         products.add(milk.getComponent(Basket.getBasket()));

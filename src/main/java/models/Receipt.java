@@ -19,20 +19,20 @@ public class Receipt {
         );
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        JPanel productsList = new JPanel(new GridLayout(basket.getProductList().size(), 3, 5, 5));
-        for (Map.Entry<Product, Integer> p: basket.getProductList().entrySet()) {
+        JPanel productsList = new JPanel(new GridLayout(basket.getProductList().size(), 4, 5, 5));
+        for (Map.Entry<Product, Integer> p : basket.getProductList().entrySet()) {
             productsList.add(new JLabel(p.getKey().getName()));
             productsList.add(new JLabel(p.getKey().getTaxType().name()));
             String builder = p.getValue() +
-                    " x" +
+                    " x " +
                     p.getKey().getPrize() +
                     " " +
                     decimalFormat.format(p.getValue() * p.getKey().getPrize()) +
                     p.getKey().getTaxType().name();
 
             productsList.add(new JLabel(builder));
-        }
 
+        }
         JPanel taxes = new JPanel(new GridLayout(basket.getAmountOfTaxes().size() * 2, 2, 40, 5));
         taxes.setBackground(Color.WHITE);
 

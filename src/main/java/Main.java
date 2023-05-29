@@ -2,10 +2,13 @@ import core.MainFrame;
 import core.RulesService;
 import models.Basket;
 import models.ItemCity;
+import models.Receipt;
 import models.products.Product;
 import models.products.TaxType;
 
+import javax.swing.*;
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -37,7 +40,25 @@ public class Main {
             RulesService.getKsession().insert(item4);
 
             RulesService.getKsession().insert(Basket.getBasket());
-            RulesService.getKsession().insert(new Product("Mleko", TaxType.A, 2.99));
+            RulesService.getKsession().insert(new Product( "Mleko", TaxType.A, 2.99));
+            Basket basket = Basket.getBasket();
+            basket.promotion();
+            JPanel receipt = Receipt.generateReceipt(basket);
+// Wyświetlenie wygenerowanego paragonu
+            System.out.println(receipt);
+
+// Sprawdzenie wartości pola discount
+            double discount = basket.getDiscount();
+            System.out.println("Discount: " + discount);
+
+// Wyświetlenie zawartości mapy productList
+            Map<Product, Integer> productList = basket.getProductList();
+            for (Map.Entry<Product, Integer> entry : productList.entrySet()) {
+                Product product = entry.getKey();
+                int quantity = entry.getValue();
+                System.out.println("Product: " + product.getName() + ", Quantity: " + quantity);
+            }
+
 
             RulesService.getKsession().fireAllRules();
 

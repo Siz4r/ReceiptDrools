@@ -8,11 +8,14 @@ import java.awt.*;
 import java.util.Objects;
 
 public class Product  {
+
     private final String name;
     private final TaxType taxType;
-    private final Double prize;
 
-    public Product(String name, TaxType taxType, Double prize) {
+    private Double prize;
+
+    public Product( String name, TaxType taxType, Double prize) {
+
         this.name = name;
         this.taxType = taxType;
         this.prize = prize;
@@ -41,6 +44,7 @@ public class Product  {
         product.add("productName", name);
         product.add("minusButton", minus);
         minus.addActionListener(e -> basket.removeProduct(this));
+
         return product;
     }
 
@@ -50,6 +54,9 @@ public class Product  {
 
     public Double getPrize() {
         return prize;
+    }
+    public void setPrize(double prize) {
+        this.prize=prize;
     }
 
     @Override

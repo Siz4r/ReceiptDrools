@@ -15,6 +15,16 @@ public class Basket {
     private final Map<Product, Integer> productList = new HashMap<>();
     private final JPanel receiptContainer = new JPanel();
     private Map<TaxType, Double> amountOfTaxes = new HashMap<>();
+    private double discount;
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
     private double totalAmount = 0;
 
     public double getTotalAmount() {
@@ -55,6 +65,32 @@ public class Basket {
             totalAmount -= product.getPrize();
             updateReceipt();
         }
+    }
+    public void promotion() {
+
+        Map<Product, Integer> productList = basket.getProductList();
+        System.out.println("dzialasz kurwa??????????");
+        System.out.println(productList);
+        System.out.println(productList.isEmpty());
+        for (Map.Entry<Product, Integer> entry : productList.entrySet()) {
+            Product product = entry.getKey();
+            int quantity = entry.getValue();
+
+            System.out.println(quantity);
+            if (product.getName().equals("Mleko") && quantity >= 3) {
+                System.out.println("mlekoooo");
+                double discountedPrice = product.getPrize() * 0.5;
+                double totalDiscount = (product.getPrize() - discountedPrice) * quantity;
+                basket.setDiscount(basket.getDiscount() + totalDiscount);
+
+                product.setPrize(discountedPrice);
+            }
+
+            productList.put(product, quantity);
+        }
+        System.out.println(productList);
+        basket.updateReceipt();
+        System.out.println(productList);
     }
 
     private void updateReceipt() {
