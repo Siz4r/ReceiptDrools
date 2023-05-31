@@ -58,10 +58,14 @@ public class RulesService {
             throw new IllegalStateException( "### errors ###" );
         }
 
+        initializeEngine(kieServices);
+
+    }
+
+    public static void initializeEngine(KieServices kieServices) {
         KieContainer kieContainer =
                 kieServices.newKieContainer( kieServices.getRepository().getDefaultReleaseId() );
         kieBase = kieContainer.getKieBase();
         ksession = kieContainer.newKieSession();
-
     }
 }

@@ -1,13 +1,16 @@
 package models;
 
+import core.RulesService;
 import models.products.Product;
 import models.products.TaxType;
+import org.kie.api.KieServices;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class Basket {
     public final Integer productsQuantity = 5;
@@ -23,6 +26,10 @@ public class Basket {
 
     public void setDiscount(double discount) {
         this.discount = discount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     private double totalAmount = 0;
@@ -50,9 +57,12 @@ public class Basket {
         productList.merge(product, 1, Integer::sum);
         amountOfTaxes.merge(product.getTaxType(), product.getTaxType().getInterest() * product.getPrize(), Double::sum);
         totalAmount += product.getPrize();
+        RulesService.initializeEngine(KieServices.Factory.get());
+        RulesService.getKsession().insert(basket);
+        RulesService.getKsession().fireAllRules();
         updateReceipt();
-
     }
+
     public void removeProduct(Product product) {
         Integer quantity = productList.get(product);
         if (quantity != null) {
@@ -69,16 +79,10 @@ public class Basket {
     public void promotion() {
 
         Map<Product, Integer> productList = basket.getProductList();
-        System.out.println("dzialasz kurwa??????????");
-        System.out.println(productList);
-        System.out.println(productList.isEmpty());
         for (Map.Entry<Product, Integer> entry : productList.entrySet()) {
             Product product = entry.getKey();
             int quantity = entry.getValue();
-
-            System.out.println(quantity);
             if (product.getName().equals("Mleko") && quantity >= 3) {
-                System.out.println("mlekoooo");
                 double discountedPrice = product.getPrize() * 0.5;
                 double totalDiscount = (product.getPrize() - discountedPrice) * quantity;
                 basket.setDiscount(basket.getDiscount() + totalDiscount);
@@ -111,5 +115,13 @@ public class Basket {
 
     public void setReceiptContainer(JPanel receiptContainer) {
         this.receiptContainer.add(receiptContainer);
+    }
+
+    public boolean contains(String name) {
+        System.out.println("cze");
+        return this.productList.keySet()
+                .stream()
+                .map(Product::getName)
+                .anyMatch(s -> s.equals(name));
     }
 }

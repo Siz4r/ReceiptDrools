@@ -8,10 +8,8 @@ import java.awt.*;
 import java.util.Objects;
 
 public class Product  {
-
     private final String name;
     private final TaxType taxType;
-
     private Double prize;
 
     public Product( String name, TaxType taxType, Double prize) {
@@ -64,7 +62,7 @@ public class Product  {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(name, product.name) && taxType == product.taxType && Objects.equals(prize, product.prize);
+        return Objects.equals(name, product.name);
     }
 
     @Override

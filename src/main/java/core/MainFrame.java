@@ -50,13 +50,15 @@ public class MainFrame {
         Product eggs = new Product( "Jaja ", TaxType.C, 15.50);
         Product oil = new Product( "Olej", TaxType.C, 7.99);
         Product bread = new Product( "Chleb", TaxType.B, 3.89);
-        JPanel products = new JPanel(new GridLayout(5, 1, 10, 10));
+        Product rekl = new Product( "Reklamowka", TaxType.B, 1.0);
+        JPanel products = new JPanel(new GridLayout(6, 1, 10, 10));
 
         products.add(milk.getComponent(Basket.getBasket()));
         products.add(sugar.getComponent(Basket.getBasket()));
         products.add(eggs.getComponent(Basket.getBasket()));
         products.add(oil.getComponent(Basket.getBasket()));
         products.add(bread.getComponent(Basket.getBasket()));
+        products.add(rekl.getComponent(Basket.getBasket()));
 
         return products;
     }
