@@ -11,7 +11,8 @@ public class Product  {
     private final String name;
     private final TaxType taxType;
     private Double prize;
-
+    private Integer amount = 0;
+    private double discount = 0.0;
     public Product( String name, TaxType taxType, Double prize) {
 
         this.name = name;
@@ -34,6 +35,7 @@ public class Product  {
         minus.setPreferredSize(new Dimension(40, 40));
 
         add.addActionListener(e -> {
+            basket.applyRules(this);
             basket.addProduct(this);
         });
 
@@ -68,6 +70,22 @@ public class Product  {
     @Override
     public int hashCode() {
         return Objects.hash(name, taxType, prize);
+
     }
 
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 }

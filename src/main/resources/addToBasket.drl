@@ -1,22 +1,19 @@
 import models.Basket;
 import models.products.Product;
-import java.math.BigDecimal;
-//
-//rule "Dodaj produkt do koszyka"
-//when
-//  $basket: Basket()
-//  $product: Product()
-//then
-//  $basket.addProduct($product);
-//end
 
-rule 'Darmowa reklamówka'
-    when
-        basket: Basket()
-            eval(basket.contains("Reklamowka"))
-    then
-        System.out.println("elo");
-        basket.setTotalAmount(basket.getTotalAmount() - 1);
+rule "Promotion: 3 Mleka"
+when
+    milk: Product(name == "Mleko")
+    $basket: Basket()
+    $count : Integer(intValue == 2) from $basket.countProducts(milk.name)
+then
+    double discountedPrice = milk.getPrize() * 0.5;
+    double totalDiscount = (milk.getPrize() - discountedPrice) * $count;
+    milk.setDiscount(discountedPrice);
+    $basket.getProduct(milk.getName()).setDiscount(discountedPrice);
+    $basket.setTotalAmount($basket.getTotalAmount() - milk.getPrize() + discountedPrice);
+
+    $basket.
 end
 
 //rule "Oblicz sumę PLN"

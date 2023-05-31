@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Receipt {
     public static JPanel generateReceipt(Basket basket) {
@@ -20,17 +21,23 @@ public class Receipt {
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         JPanel productsList = new JPanel(new GridLayout(basket.getProductList().size(), 4, 5, 5));
-        for (Map.Entry<Product, Integer> p : basket.getProductList().entrySet()) {
-            productsList.add(new JLabel(p.getKey().getName()));
-            productsList.add(new JLabel(p.getKey().getTaxType().name()));
-            String builder = p.getValue() +
+        for (Product p : basket.getProductList().stream().filter(p -> p.getAmount() > 0).collect(Collectors.toSet())) {
+            productsList.add(new JLabel(p.getName()));
+            productsList.add(new JLabel(p.getTaxType().name()));
+            String discount = p.getDiscount() != 0 ?
+                    " - " + decimalFormat.format(p.getDiscount()) + " = " +
+                            (decimalFormat.format(p.getPrize() * p.getAmount() - p.getDiscount())) :
+                    "";
+            String builder = p.getAmount() +
                     " x " +
-                    p.getKey().getPrize() +
+                    p.getPrize() +
                     " " +
-                    decimalFormat.format(p.getValue() * p.getKey().getPrize()) +
-                    p.getKey().getTaxType().name();
-
-            productsList.add(new JLabel(builder));
+                    decimalFormat.format(p.getAmount() * p.getPrize()) +
+                    p.getTaxType().name() + discount;
+            JLabel disc = new JLabel(builder);
+            disc.setMaximumSize(new Dimension(1000, 80));
+            disc.setText("<html>" + builder.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>");
+            productsList.add(disc);
 
         }
         JPanel taxes = new JPanel(new GridLayout(basket.getAmountOfTaxes().size() * 2, 2, 40, 5));

@@ -29,6 +29,13 @@ public class MainFrame {
         window.add(products);
 
         Basket basket1 = Basket.getBasket();
+        basket1.getProductList().add(new Product("Mleko", TaxType.A, 2.99));
+        basket1.getProductList().add(new Product( "Cukier", TaxType.B, 5.0));
+        basket1.getProductList().add(new Product( "Jaja ", TaxType.C, 15.50));
+        basket1.getProductList().add(new Product( "Olej", TaxType.C, 7.99));
+        basket1.getProductList().add(new Product( "Chleb", TaxType.B, 3.89));
+        basket1.getProductList().add(new Product( "Reklamowka", TaxType.B, 1.0));
+
         basket1.setReceiptContainer(Receipt.generateReceipt(basket1));
         basket1.promotion();
 
